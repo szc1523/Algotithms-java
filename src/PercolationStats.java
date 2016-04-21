@@ -14,6 +14,9 @@ public class PercolationStats {
     private double[] frac; 
     // perform T independent experiments on an N-by-N grid
     public PercolationStats(int N, int T) {
+        if (N <= 0 || T <= 0)
+            throw new IllegalArgumentException("both input should be"
+                    + " integers greater than zero");
         len = N;  
         time = T;
         frac = new double[T]; 

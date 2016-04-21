@@ -5,10 +5,11 @@
  */
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
-import edu.princeton.cs.algs4.StdOut;
+//import edu.princeton.cs.algs4.StdOut;
 
 public class Percolation {
     private WeightedQuickUnionUF grid;
+    private WeightedQuickUnionUF gri2;
     private final int len; //length of the grid
     private final int top;   //the virtual top site
     private final int bot;   //the virtual bottom site
@@ -25,7 +26,9 @@ public class Percolation {
         top = 0;
         bot = len * len + 1;
         opened = new boolean[len * len + 2];        
-        grid = new WeightedQuickUnionUF(len * len + 2);    
+        grid = new WeightedQuickUnionUF(len * len + 2);
+        gri2 = new WeightedQuickUnionUF(len * len + 1); 
+        
     }
 
     // open site (row i, column j) if it is not open already
@@ -34,25 +37,50 @@ public class Percolation {
             opened[mat2ind(i, j)] = true;
             if (i == 1) {
                 grid.union(top, mat2ind(i, j));
-                if (isOpen(i + 1, j)) grid.union(mat2ind(i, j), mat2ind(i + 1, j));
+                gri2.union(top, mat2ind(i, j));
+                if (isOpen(i + 1, j)) { 
+                    grid.union(mat2ind(i, j), mat2ind(i + 1, j));
+                    gri2.union(mat2ind(i, j), mat2ind(i + 1, j));
+                }
             }
             else if (i == len) {
                 grid.union(bot, mat2ind(i, j));
-                if (isOpen(i - 1, j)) grid.union(mat2ind(i, j), mat2ind(i - 1, j));
+                if (isOpen(i - 1, j)) {
+                    grid.union(mat2ind(i, j), mat2ind(i - 1, j));
+                    gri2.union(mat2ind(i, j), mat2ind(i - 1, j));
+                }
             }
             else {
-                if (isOpen(i + 1, j)) grid.union(mat2ind(i, j), mat2ind(i + 1, j)); 
-                if (isOpen(i - 1, j)) grid.union(mat2ind(i, j), mat2ind(i - 1, j));
+                if (isOpen(i + 1, j)) {
+                    grid.union(mat2ind(i, j), mat2ind(i + 1, j)); 
+                    gri2.union(mat2ind(i, j), mat2ind(i + 1, j)); 
+                }
+                if (isOpen(i - 1, j)) {
+                    grid.union(mat2ind(i, j), mat2ind(i - 1, j));
+                    gri2.union(mat2ind(i, j), mat2ind(i - 1, j));
+                }
             }
             if (j == 1) {
-                if (isOpen(i, j + 1)) grid.union(mat2ind(i, j), mat2ind(i, j + 1));
+                if (isOpen(i, j + 1)) {
+                    grid.union(mat2ind(i, j), mat2ind(i, j + 1));
+                    gri2.union(mat2ind(i, j), mat2ind(i, j + 1));
+                }
             }
             else if (j == len) {
-                if (isOpen(i, j - 1)) grid.union(mat2ind(i, j), mat2ind(i, j - 1));
+                if (isOpen(i, j - 1)) {
+                    grid.union(mat2ind(i, j), mat2ind(i, j - 1));
+                    gri2.union(mat2ind(i, j), mat2ind(i, j - 1));
+                }
             }
             else {
-                if (isOpen(i, j + 1)) grid.union(mat2ind(i, j), mat2ind(i, j + 1)); 
-                if (isOpen(i, j - 1))  grid.union(mat2ind(i, j), mat2ind(i, j - 1));
+                if (isOpen(i, j + 1)) {
+                    grid.union(mat2ind(i, j), mat2ind(i, j + 1)); 
+                    gri2.union(mat2ind(i, j), mat2ind(i, j + 1)); 
+                }
+                if (isOpen(i, j - 1)) {
+                    grid.union(mat2ind(i, j), mat2ind(i, j - 1));
+                    gri2.union(mat2ind(i, j), mat2ind(i, j - 1));
+                }
             }            
         }       
     }
@@ -72,7 +100,7 @@ public class Percolation {
     // is site (row i, column j) full?
     public boolean isFull(int i, int j) {
         validate(i, j);
-        return grid.connected(mat2ind(i, j), top);        
+        return gri2.connected(mat2ind(i, j), top);        
     }
     
     // does the system percolate?
@@ -86,8 +114,11 @@ public class Percolation {
         return (i - 1) * len + j;   
     }
     
+    /**
+     * @param args
+     */
     public static void main(String[] args) {
-        int dim = 4;
+        /*int dim = 4;
         Percolation tst = new Percolation(dim);
         StdOut.println(tst.grid.connected(tst.mat2ind(3, 2), tst.mat2ind(3, 3)));
 
@@ -114,7 +145,7 @@ public class Percolation {
                 StdOut.print(tst.isFull(i, j) + "  ");
             }
             StdOut.println();
-        }
+        }*/
     }
 
 }
