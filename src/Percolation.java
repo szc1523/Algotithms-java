@@ -35,52 +35,28 @@ public class Percolation {
     public void open(int i, int j) {  
         if (!isOpen(i, j)) {
             opened[mat2ind(i, j)] = true;
-            if (i == 1) {
+            if (i == 1) {                
                 grid.union(top, mat2ind(i, j));
                 gri2.union(top, mat2ind(i, j));
-                if (isOpen(i + 1, j)) { 
-                    grid.union(mat2ind(i, j), mat2ind(i + 1, j));
-                    gri2.union(mat2ind(i, j), mat2ind(i + 1, j));
-                }
+                if (isOpen(i + 1, j)) openboth(i, j, i + 1, j);
             }
-            else if (i == len) {
+            else if (i == len) { 
                 grid.union(bot, mat2ind(i, j));
-                if (isOpen(i - 1, j)) {
-                    grid.union(mat2ind(i, j), mat2ind(i - 1, j));
-                    gri2.union(mat2ind(i, j), mat2ind(i - 1, j));
-                }
+                if (isOpen(i - 1, j)) openboth(i, j, i - 1, j);
             }
             else {
-                if (isOpen(i + 1, j)) {
-                    grid.union(mat2ind(i, j), mat2ind(i + 1, j)); 
-                    gri2.union(mat2ind(i, j), mat2ind(i + 1, j)); 
-                }
-                if (isOpen(i - 1, j)) {
-                    grid.union(mat2ind(i, j), mat2ind(i - 1, j));
-                    gri2.union(mat2ind(i, j), mat2ind(i - 1, j));
-                }
+                if (isOpen(i + 1, j)) openboth(i, j, i + 1, j);
+                if (isOpen(i - 1, j)) openboth(i, j, i - 1, j);
             }
             if (j == 1) {
-                if (isOpen(i, j + 1)) {
-                    grid.union(mat2ind(i, j), mat2ind(i, j + 1));
-                    gri2.union(mat2ind(i, j), mat2ind(i, j + 1));
-                }
+                if (isOpen(i, j + 1)) openboth(i, j, i, j + 1);
             }
             else if (j == len) {
-                if (isOpen(i, j - 1)) {
-                    grid.union(mat2ind(i, j), mat2ind(i, j - 1));
-                    gri2.union(mat2ind(i, j), mat2ind(i, j - 1));
-                }
+                if (isOpen(i, j - 1)) openboth(i, j, i, j - 1);  
             }
             else {
-                if (isOpen(i, j + 1)) {
-                    grid.union(mat2ind(i, j), mat2ind(i, j + 1)); 
-                    gri2.union(mat2ind(i, j), mat2ind(i, j + 1)); 
-                }
-                if (isOpen(i, j - 1)) {
-                    grid.union(mat2ind(i, j), mat2ind(i, j - 1));
-                    gri2.union(mat2ind(i, j), mat2ind(i, j - 1));
-                }
+                if (isOpen(i, j + 1)) openboth(i, j, i, j + 1);
+                if (isOpen(i, j - 1)) openboth(i, j, i, j - 1);
             }            
         }       
     }
@@ -112,6 +88,12 @@ public class Percolation {
     //mind that the API starts from 0, while this class starts from 1
     private int mat2ind(int i, int j) {
         return (i - 1) * len + j;   
+    }
+    
+    //open both grid and gri2
+    private void openboth(int i, int j, int k, int l) {
+        grid.union(mat2ind(i, j), mat2ind(k, l));
+        gri2.union(mat2ind(i, j), mat2ind(k, l));
     }
     
     /**
