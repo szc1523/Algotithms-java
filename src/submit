@@ -1,4 +1,0 @@
-cd ~/workspace/Percolation/src
-zip percolation.zip Percolation.java PercolationStats.java
-mv percolation.zip /mnt/hgfs/ubuntu/
-

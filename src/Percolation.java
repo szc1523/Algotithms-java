@@ -35,29 +35,36 @@ public class Percolation {
     public void open(int i, int j) {  
         if (!isOpen(i, j)) {
             opened[mat2ind(i, j)] = true;
-            if (i == 1) {                
+            if (len == 1) {
                 grid.union(top, mat2ind(i, j));
                 gri2.union(top, mat2ind(i, j));
-                if (isOpen(i + 1, j)) openboth(i, j, i + 1, j);
-            }
-            else if (i == len) { 
                 grid.union(bot, mat2ind(i, j));
-                if (isOpen(i - 1, j)) openboth(i, j, i - 1, j);
             }
             else {
-                if (isOpen(i + 1, j)) openboth(i, j, i + 1, j);
-                if (isOpen(i - 1, j)) openboth(i, j, i - 1, j);
+                if (i == 1) {                
+                    grid.union(top, mat2ind(i, j));
+                    gri2.union(top, mat2ind(i, j));
+                    if (isOpen(i + 1, j)) openboth(i, j, i + 1, j);
+                }
+                else if (i == len) { 
+                    grid.union(bot, mat2ind(i, j));
+                    if (isOpen(i - 1, j)) openboth(i, j, i - 1, j);
+                }
+                else {
+                    if (isOpen(i + 1, j)) openboth(i, j, i + 1, j);
+                    if (isOpen(i - 1, j)) openboth(i, j, i - 1, j);
+                }
+                if (j == 1) {
+                    if (isOpen(i, j + 1)) openboth(i, j, i, j + 1);
+                }
+                else if (j == len) {
+                    if (isOpen(i, j - 1)) openboth(i, j, i, j - 1);  
+                }
+                else {
+                    if (isOpen(i, j + 1)) openboth(i, j, i, j + 1);
+                    if (isOpen(i, j - 1)) openboth(i, j, i, j - 1);
+                }     
             }
-            if (j == 1) {
-                if (isOpen(i, j + 1)) openboth(i, j, i, j + 1);
-            }
-            else if (j == len) {
-                if (isOpen(i, j - 1)) openboth(i, j, i, j - 1);  
-            }
-            else {
-                if (isOpen(i, j + 1)) openboth(i, j, i, j + 1);
-                if (isOpen(i, j - 1)) openboth(i, j, i, j - 1);
-            }            
         }       
     }
     
