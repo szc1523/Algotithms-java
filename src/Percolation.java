@@ -16,6 +16,7 @@ public class Percolation {
     
     private boolean[] opened;   //is true if a site is open
     
+    
     // create N-by-N grid, with all sites blocked
     public Percolation(int N) {   
         if (N <= 0)
